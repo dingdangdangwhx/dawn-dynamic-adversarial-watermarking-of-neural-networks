@@ -204,8 +204,8 @@ def create_dir_if_doesnt_exist(path_to_dir: str) -> None:
 
 
 def setup_transformations(training_set: str, watermark_set: str, force_greyscale: bool, normalize_with_imagenet_vals: bool, input_size: int) -> Tuple[tv.transforms.Compose, tv.transforms.Compose]:
-    mean = [0.5, 0.5, 0.5]
-    std = [0.5, 0.5, 0.5]
+    mean = [0.5,]
+    std = [0.5,]
     if normalize_with_imagenet_vals:
         mean =  [0.485, 0.456, 0.406]
         std  =  [0.229, 0.224, 0.225]
@@ -298,6 +298,9 @@ def construct_watermark_set(watermark_set: data.Dataset, watermark_size: int, nu
     watermark, train = data.dataset.random_split(watermark_set, (watermark_size, len_ - watermark_size))
     log.info("Split set into: {} and {}".format(len(watermark), len(train)))
 
+
+
+    # B_v(x) 实现：添加错误label
     watermark = SimpleDataset([(img, another_label(label, number_of_classes)) for img, label in watermark])
     if partition:
         return watermark, train

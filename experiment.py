@@ -62,6 +62,9 @@ class ExperimentTraining(Experiment):
             for epoch in range(epochs):
                 log.info("Epoch {}/{}".format(epoch + 1, epochs))
                 running_loss = 0.0
+
+
+                
                 for i, (inputs, yreal) in enumerate(tqdm(training_loader, unit="images", desc="Training victim model", leave=True, ascii=True), 0):
                     if use_cuda:
                         inputs, yreal = inputs.cuda(), yreal.cuda()
@@ -122,6 +125,7 @@ class ExperimentTraining(Experiment):
 
             optimizer = optimizer(attacker_model.parameters(), lr=0.001, weight_decay=weight_decay)
             if use_cuda:
+                # print("***********cuda is open************")
                 attacker_model = attacker_model.cuda()
 
             scores = {
@@ -139,7 +143,13 @@ class ExperimentTraining(Experiment):
 
                 running_loss = 0.0
 
+
+
+                # !!!!不知道在干什么
                 attacker_model.train()
+
+
+
                 for i, (inputs, yreal) in enumerate(tqdm(training_loader, unit="images", desc="Training attacker model (regular)", leave=True, ascii=True), 0):
                     if use_cuda:
                         inputs, yreal = inputs.cuda(), yreal.cuda()
